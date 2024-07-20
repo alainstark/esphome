@@ -74,7 +74,10 @@ void DS248xComponent::setup() {
     this->sleep_pin_->pin_mode(esphome::gpio::FLAG_OUTPUT);
   }
 
-  if (this->ds248x_type_ == DS248xType::DS2482_100) {
+  // DS2482-100 or DS2484
+  if (this->ds248x_type_ == DS248xType::DS2482_100 ||
+      this->ds248x_type_ == DS248xType::DS2484)
+  {
     // Reset
     this->reset_hub_();
     address = 0;
@@ -122,8 +125,10 @@ void DS248xComponent::setup() {
     this->found_channel_sensors_.push_back(channel);
   }
 
-  // DS2482_100
-  if (this->ds248x_type_ == DS248xType::DS2482_100) {
+  // DS2482-100 or DS2484
+  if (this->ds248x_type_ == DS248xType::DS2482_100 ||
+      this->ds248x_type_ == DS248xType::DS2482_100)
+  {
     for (auto *sensor : this->sensors_) {
       if (sensor->get_index().has_value()) {
         if (*sensor->get_index() >= this->found_sensors_.size()) {
@@ -174,10 +179,13 @@ void DS248xComponent::dump_config() {
 
   switch (this->ds248x_type_) {
     case DS248xType::DS2482_100:
-      ESP_LOGCONFIG(TAG, "  Type: DD2482-100");
+      ESP_LOGCONFIG(TAG, "  Type: DS2482-100");
       break;
     case DS248xType::DS2482_800:
       ESP_LOGCONFIG(TAG, "  Type: DS2482-800");
+      break;
+    case DS248xType::DS2484:
+      ESP_LOGCONFIG(TAG, "  Type: DS2484");
       break;
   }
 
@@ -195,8 +203,10 @@ void DS248xComponent::dump_config() {
   }
   LOG_UPDATE_INTERVAL(this);
 
-  // DS2482-100
-  if (this->ds248x_type_ == DS248xType::DS2482_100) {
+  // DS2482-100 or DS2484
+  if (this->ds248x_type_ == DS248xType::DS2482_100 ||
+     this->ds248x_type_ == DS248xType::DS2484)
+  {
     for (auto *sensor : this->sensors_) {
       LOG_SENSOR("  ", "Device", sensor);
       if (sensor->get_index().has_value()) {
@@ -211,7 +221,7 @@ void DS248xComponent::dump_config() {
       ESP_LOGCONFIG(TAG, "    Resolution: %u", sensor->get_resolution());
     }
   }
-
+  
   // DS2482-800
   if (this->ds248x_type_ == DS248xType::DS2482_800) {
     for (channel = 0; channel < NBR_CHANNELS; channel++) {
@@ -236,7 +246,9 @@ void DS248xComponent::register_sensor(DS248xTemperatureSensor *sensor) {
   this->sensors_.push_back(sensor);
 
   // DS2482-100
-  if (this->ds248x_type_ == DS248xType::DS2482_100) {
+  if (this->ds248x_type_ == DS248xType::DS2482_100 ||
+      this->ds248x_type_ == DS248xType::DS2484)
+  {
     this->channel_sensors_[0].push_back(sensor);
   }
 

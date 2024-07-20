@@ -15,6 +15,7 @@ namespace ds248x {
 enum class DS248xType : int {
   DS2482_100 = 0,
   DS2482_800 = 1,
+  DS2484 = 2,
 };
 
 class DS248xTemperatureSensor;

@@ -24,6 +24,7 @@ ds248xType = ds248x_ns.enum("DS248xType", is_class=True)
 DS248X_TYPES = {
     "ds2482-100": ds248xType.DS2482_100,
     "ds2482-800": ds248xType.DS2482_800,
+    "ds2484" : ds248xType.DS2484,
 }
 
 
